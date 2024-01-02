@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProiectMPD.Data;
 
@@ -11,9 +12,11 @@ using ProiectMPD.Data;
 namespace ProiectMPD.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240102150931_ReleaseGenre2")]
+    partial class ReleaseGenre2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace ProiectMPD.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ArtistRelease", b =>
+                {
+                    b.Property<int>("ArtistsID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReleasesID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArtistsID", "ReleasesID");
+
+                    b.HasIndex("ReleasesID");
+
+                    b.ToTable("ArtistRelease");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -307,9 +325,6 @@ namespace ProiectMPD.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int?>("ArtistID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Label")
                         .HasColumnType("nvarchar(max)");
 
@@ -328,8 +343,6 @@ namespace ProiectMPD.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ArtistID");
 
                     b.ToTable("Releases");
                 });
@@ -368,7 +381,7 @@ namespace ProiectMPD.Data.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ReleaseID")
+                    b.Property<int>("ReleaseID")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -376,6 +389,7 @@ namespace ProiectMPD.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
@@ -398,7 +412,7 @@ namespace ProiectMPD.Data.Migrations
                     b.Property<TimeSpan>("Length")
                         .HasColumnType("time");
 
-                    b.Property<int?>("ReleaseID")
+                    b.Property<int>("ReleaseID")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -410,6 +424,21 @@ namespace ProiectMPD.Data.Migrations
                     b.HasIndex("ReleaseID");
 
                     b.ToTable("Songs");
+                });
+
+            modelBuilder.Entity("ArtistRelease", b =>
+                {
+                    b.HasOne("ProiectMPD.Models.Artist", null)
+                        .WithMany()
+                        .HasForeignKey("ArtistsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProiectMPD.Models.Release", null)
+                        .WithMany()
+                        .HasForeignKey("ReleasesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -489,15 +518,6 @@ namespace ProiectMPD.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProiectMPD.Models.Release", b =>
-                {
-                    b.HasOne("ProiectMPD.Models.Artist", "Artist")
-                        .WithMany("Releases")
-                        .HasForeignKey("ArtistID");
-
-                    b.Navigation("Artist");
-                });
-
             modelBuilder.Entity("ProiectMPD.Models.ReleaseGenre", b =>
                 {
                     b.HasOne("ProiectMPD.Models.Genre", "Genre")
@@ -521,11 +541,15 @@ namespace ProiectMPD.Data.Migrations
                 {
                     b.HasOne("ProiectMPD.Models.Release", "Release")
                         .WithMany("Reviews")
-                        .HasForeignKey("ReleaseID");
+                        .HasForeignKey("ReleaseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Release");
 
@@ -536,14 +560,11 @@ namespace ProiectMPD.Data.Migrations
                 {
                     b.HasOne("ProiectMPD.Models.Release", "Release")
                         .WithMany("Songs")
-                        .HasForeignKey("ReleaseID");
+                        .HasForeignKey("ReleaseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Release");
-                });
-
-            modelBuilder.Entity("ProiectMPD.Models.Artist", b =>
-                {
-                    b.Navigation("Releases");
                 });
 
             modelBuilder.Entity("ProiectMPD.Models.Genre", b =>

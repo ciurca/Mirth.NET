@@ -21,7 +21,7 @@ namespace ProiectMPD.Pages.Songs
 
         public IActionResult OnGet()
         {
-        ViewData["ReleaseID"] = new SelectList(_context.Releases, "ID", "ID");
+        ViewData["ReleaseID"] = new SelectList(_context.Releases, "ID", "Name");
             return Page();
         }
 

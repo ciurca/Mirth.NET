@@ -11,8 +11,9 @@ namespace ProiectMPD.Models
         public string? Label { get; set; }
         public int? Year { get; set; }
         // Navigation properties for many-to-many relationship
-        public ICollection<Genre>? Genres { get; set; }
-        public ICollection<Artist>? Artists { get; set; }
+        public ICollection<ReleaseGenre>? ReleaseGenres { get; set; }
+        public int? ArtistID { get; set; } // Foreign key
+        public Artist? Artist { get; set; } // Navigation property
         public ICollection<Song>? Songs { get; set; } // If a Release can have multiple Songs
         public ICollection<MusicLibrary>? MusicLibraries { get; set; } // For the many-to-many relationship with Library
 

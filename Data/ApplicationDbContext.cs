@@ -14,6 +14,7 @@ namespace ProiectMPD.Data
     public DbSet<Artist> Artists { get; set; }
     public DbSet<Song> Songs { get; set; }
     public DbSet<Release> Releases { get; set; }
+    public DbSet<ReleaseGenre> ReleaseGenres { get; set; }
     public DbSet<MusicLibrary> MusicLibraries { get; set; }
     public DbSet<Review> Reviews { get; set; }
 

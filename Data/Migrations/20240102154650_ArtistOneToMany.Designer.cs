@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProiectMPD.Data;
 
@@ -11,9 +12,11 @@ using ProiectMPD.Data;
 namespace ProiectMPD.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240102154650_ArtistOneToMany")]
+    partial class ArtistOneToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -368,7 +371,7 @@ namespace ProiectMPD.Data.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ReleaseID")
+                    b.Property<int>("ReleaseID")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -376,6 +379,7 @@ namespace ProiectMPD.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
@@ -398,7 +402,7 @@ namespace ProiectMPD.Data.Migrations
                     b.Property<TimeSpan>("Length")
                         .HasColumnType("time");
 
-                    b.Property<int?>("ReleaseID")
+                    b.Property<int>("ReleaseID")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -521,11 +525,15 @@ namespace ProiectMPD.Data.Migrations
                 {
                     b.HasOne("ProiectMPD.Models.Release", "Release")
                         .WithMany("Reviews")
-                        .HasForeignKey("ReleaseID");
+                        .HasForeignKey("ReleaseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Release");
 
@@ -536,7 +544,9 @@ namespace ProiectMPD.Data.Migrations
                 {
                     b.HasOne("ProiectMPD.Models.Release", "Release")
                         .WithMany("Songs")
-                        .HasForeignKey("ReleaseID");
+                        .HasForeignKey("ReleaseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Release");
                 });
