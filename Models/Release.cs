@@ -14,7 +14,7 @@ namespace ProiectMPD.Models
         public ICollection<Genre>? Genres { get; set; }
         public ICollection<Artist>? Artists { get; set; }
         public ICollection<Song>? Songs { get; set; } // If a Release can have multiple Songs
-        public ICollection<Library>? Libraries { get; set; } // For the many-to-many relationship with Library
+        public ICollection<MusicLibrary>? MusicLibraries { get; set; } // For the many-to-many relationship with Library
 
         public ICollection<Review>? Reviews { get; set; }
 

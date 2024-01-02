@@ -2,10 +2,10 @@
 
 namespace ProiectMPD.Models
 {
-    public class Library
+    public class MusicLibrary
     {
         public int ID { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         // Foreign key to User
         public string UserId { get; set; }
         // Navigation property to User
