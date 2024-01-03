@@ -7,9 +7,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -31,6 +28,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Release[0].Artist)
             </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -56,14 +54,28 @@
                 @Html.DisplayFor(modelItem => item.Artist.ID)
             </td>
             <td>
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a>
             </td>
-            <td>
-                    <form method="post" asp-page-handler="AddToLibrary">
-                        <input type="hidden" name="releaseId" value="@item.ID" />
-                        <button type="submit" class="btn btn-success">Add to Library</button>
-                    </form>
-            </td>
+                @if (Model.ReleasesInLibrary.Contains(@item.ID))
+                {
+                    <td>
+                        <form method="post" asp-page-handler="RemoveFromLibrary">
+                            <input type="hidden" name="releaseId" value="@item.ID" />
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-x-square-fill"></i> Remove from Library</button>
+                        </form>
+                    </td>
+                }
+                else
+                {
+                <td>
+                        <form method="post" asp-page-handler="AddToLibrary">
+                            <input type="hidden" name="releaseId" value="@item.ID" />
+                            <button type="submit" class="btn btn-success"><i class="bi bi-plus-square-fill"></i> Add to Library</button>
+                        </form>
+                </td>
+                    
+                }
+
         </tr>
 }
     </tbody>

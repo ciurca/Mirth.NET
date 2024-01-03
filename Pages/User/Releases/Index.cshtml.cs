@@ -9,16 +9,21 @@ using ProiectMPD.Data;
 using ProiectMPD.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using ProiectMPD.Services;
 
 namespace ProiectMPD.Pages.User.Releases
 {
     public class IndexModel : PageModel
     {
         private readonly ProiectMPD.Data.ApplicationDbContext _context;
+        private readonly MusicLibraryService _musicLibraryService;
+        public HashSet<int> ReleasesInLibrary { get; set; }
 
-        public IndexModel(ProiectMPD.Data.ApplicationDbContext context)
+
+        public IndexModel(MusicLibraryService musicLibraryService,ProiectMPD.Data.ApplicationDbContext context)
         {
             _context = context;
+            _musicLibraryService = musicLibraryService;
         }
 
         public IList<Release> Release { get;set; } = default!;
@@ -27,25 +32,42 @@ namespace ProiectMPD.Pages.User.Releases
         {
             Release = await _context.Releases
                 .Include(r => r.Artist).ToListAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var libraryReleaseIds = await _context.MusicLibraries
+                                          .Where(l => l.UserId == userId)
+                                          .SelectMany(l => l.Releases)
+                                          .Select(r => r.ID)
+                                          .ToListAsync();
+            ReleasesInLibrary = libraryReleaseIds.ToHashSet();
+
         }
         public async Task<IActionResult> OnPostAddToLibraryAsync(int releaseId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
-            var library = await _context.MusicLibraries.FirstOrDefaultAsync(l => l.UserId == userId);
-            
-            if (library.Releases == null)
-            {
-                library.Releases = new List<Release>();
-            }
+            var success = await _musicLibraryService.AddReleaseToLibrary(userId, releaseId);
 
-            if (!library.Releases.Any(r => r.ID == releaseId))
+            if (success)
             {
-                var releaseToAdd = await _context.Releases.FindAsync(releaseId);
-                library.Releases.Add(releaseToAdd);
+                // Redirect or return success message
+                TempData["SuccessMessage"] = "Release added to your library.";
+                return RedirectToPage("./Index");
             }
+            TempData["ErrorMessage"] = "Unable to add release to library.";
+            return RedirectToPage();
+        }
+        public async Task<IActionResult> OnPostRemoveFromLibraryAsync(int releaseId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var success = await _musicLibraryService.RemoveReleaseFromLibrary(userId, releaseId);
 
-            await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
+            if (success)
+            {
+                // Redirect or return success message
+                TempData["SuccessMessage"] = "Release removed from your library.";
+                return RedirectToPage("./Index");
+            }
+            TempData["ErrorMessage"] = "Unable to remove release to library.";
+            return RedirectToPage();
         }
 
     }

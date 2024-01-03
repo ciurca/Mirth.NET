@@ -9,6 +9,7 @@ using ProiectMPD.Data;
 using ProiectMPD.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using ProiectMPD.Services;
 
 namespace ProiectMPD.Pages.User.Releases
 {
@@ -17,9 +18,11 @@ namespace ProiectMPD.Pages.User.Releases
         private readonly ProiectMPD.Data.ApplicationDbContext _context;
         public bool IsInLibrary { get; set; }
 
+        MusicLibraryService _musicLibraryService;
 
-        public DetailsModel(ProiectMPD.Data.ApplicationDbContext context)
+        public DetailsModel(MusicLibraryService musicLibraryService,ProiectMPD.Data.ApplicationDbContext context)
         {
+            _musicLibraryService = musicLibraryService;
             _context = context;
         }
 
@@ -51,6 +54,37 @@ namespace ProiectMPD.Pages.User.Releases
                                 .SelectMany(l => l.Releases)
                                 .AnyAsync(r => r.ID == id);
             return Page();
+        }
+        public async Task<IActionResult> OnPostAddToLibraryAsync(int releaseId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var success = await _musicLibraryService.AddReleaseToLibrary(userId, releaseId);
+
+            if (success)
+            {
+                // Redirect or return success message
+                TempData["SuccessMessage"] = "Release added to library.";
+            } else
+            {
+                TempData["ErrorMessage"] = "Unable to add release to library.";
+            }
+            return RedirectToPage("./Details", new { id = releaseId });
+        }
+        public async Task<IActionResult> OnPostRemoveFromLibraryAsync(int releaseId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var success = await _musicLibraryService.RemoveReleaseFromLibrary(userId, releaseId);
+
+            if (success)
+            {
+                // Redirect or return success message
+                TempData["SuccessMessage"] = "Release removed from your library.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Unable to add release to library.";
+            }
+            return RedirectToPage("./Details", new { id = releaseId });
         }
     }
 }

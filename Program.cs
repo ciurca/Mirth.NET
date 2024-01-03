@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProiectMPD.Data;
+using ProiectMPD.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +9,15 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy =>
    policy.RequireRole("Admin"));
+    options.AddPolicy("UserPolicy", policy =>
+   policy.RequireRole("Admin", "User"));
 });
+
 
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizeFolder("/Admin", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/User", "UserPolicy");
 });
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -24,6 +29,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<MusicLibraryService>();
 
 var app = builder.Build();
 
