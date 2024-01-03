@@ -12,10 +12,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizeFolder("/Releases", "AdminPolicy");
-    options.Conventions.AuthorizeFolder("/Genres", "AdminPolicy");
-    options.Conventions.AuthorizeFolder("/Artists", "AdminPolicy");
-    options.Conventions.AuthorizeFolder("/Songs", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/Admin", "AdminPolicy");
 });
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
