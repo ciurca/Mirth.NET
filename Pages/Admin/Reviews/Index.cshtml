@@ -1,11 +1,11 @@
 ﻿@page
-@model ProiectMPD.Pages.Songs.IndexModel
+@model ProiectMPD.Pages.Admin.Reviews.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Reviews</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -14,28 +14,34 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Song[0].Title)
+                @Html.DisplayNameFor(model => model.Review[0].Rating)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Song[0].Length)
+                @Html.DisplayNameFor(model => model.Review[0].Text)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Song[0].Release)
+                @Html.DisplayNameFor(model => model.Review[0].User.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Review[0].Release)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Song) {
+@foreach (var item in Model.Review) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                @Html.DisplayFor(modelItem => item.Rating)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Length)
+                @Html.DisplayFor(modelItem => item.Text)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Release.Name)
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Release.ID)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |

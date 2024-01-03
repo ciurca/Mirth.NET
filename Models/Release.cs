@@ -8,6 +8,7 @@ namespace ProiectMPD.Models
         public string Name { get; set; }
         public string Type { get; set; }
         public string? Language { get; set; }
+        public string? Artwork { get; set; }
         public string? Label { get; set; }
         public int? Year { get; set; }
         // Navigation properties for many-to-many relationship
