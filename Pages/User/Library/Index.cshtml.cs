@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using ProiectMPD.Services;
 
-namespace ProiectMPD.Pages.User.Releases
+namespace ProiectMPD.Pages.User.Library
 {
     public class IndexModel : PageModel
     {
@@ -32,22 +32,35 @@ namespace ProiectMPD.Pages.User.Releases
         public async Task OnGetAsync(string searchString)
         {
             CurrentFilter = searchString;
-            Release = await _context.Releases
-                .Include(r => r.Artist).ToListAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+
+            IQueryable<Release> releasesQuery = _context.Releases.AsQueryable();
+            // Get IDs of releases in the user's library
+            var libraryReleaseIds = await _context.MusicLibraries
+                                                  .Where(l => l.UserId == userId)
+                                                  .SelectMany(l => l.Releases)
+                                                  .Select(r => r.ID)
+                                                  .ToListAsync();
+
+            // Fetch only releases that are in the user's library
+            releasesQuery = _context.Releases
+                                        .Where(r => libraryReleaseIds.Contains(r.ID))
+                                        .Include(r => r.Artist);
+
+            // Apply search filter if there is a searchString
             if (!String.IsNullOrEmpty(searchString))
             {
-                Release = await _context.Releases.Where(s => s.Artist.Name.Contains(searchString)
-               || s.Name.Contains(searchString)).ToListAsync();
+                releasesQuery = releasesQuery.Where(s => s.Artist.Name.Contains(searchString)
+                                                          || s.Name.Contains(searchString));
             }
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
-            var libraryReleaseIds = await _context.MusicLibraries
-                                          .Where(l => l.UserId == userId)
-                                          .SelectMany(l => l.Releases)
-                                          .Select(r => r.ID)
-                                          .ToListAsync();
-            ReleasesInLibrary = libraryReleaseIds.ToHashSet();
 
+            // Execute the query
+            Release = await releasesQuery.ToListAsync();
+
+            // Converting to HashSet is not needed here unless it's used for other purposes
+            // ReleasesInLibrary = libraryReleaseIds.ToHashSet();
         }
+
         public async Task<IActionResult> OnPostAddToLibraryAsync(int releaseId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID

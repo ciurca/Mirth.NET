@@ -1,11 +1,11 @@
 ﻿@page
-@model ProiectMPD.Pages.User.Releases.IndexModel
+@model ProiectMPD.Pages.User.Library.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1><i class="bi bi-vinyl-fill"></i> Releases</h1>
+<h1><i class="bi bi-music-note-list"></i> Library</h1>
 <form asp-page="./Index" method="get">
  <div class="form-actions no-color">
  <p>
@@ -60,30 +60,17 @@
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Artist.ID)
+                @Html.DisplayFor(modelItem => item.Artist.Name)
             </td>
             <td>
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a>
+                <a asp-page="/User/Releases/Details" asp-route-id="@item.ID">Details</a>
             </td>
-                @if (Model.ReleasesInLibrary.Contains(@item.ID))
-                {
                     <td>
                         <form method="post" asp-page-handler="RemoveFromLibrary">
                             <input type="hidden" name="releaseId" value="@item.ID" />
                             <button type="submit" class="btn btn-danger"><i class="bi bi-x-square-fill"></i> Remove from Library</button>
                         </form>
                     </td>
-                }
-                else
-                {
-                <td>
-                        <form method="post" asp-page-handler="AddToLibrary">
-                            <input type="hidden" name="releaseId" value="@item.ID" />
-                            <button type="submit" class="btn btn-success"><i class="bi bi-plus-square-fill"></i> Add to Library</button>
-                        </form>
-                </td>
-                    
-                }
 
         </tr>
 }
