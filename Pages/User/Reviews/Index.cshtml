@@ -1,0 +1,42 @@
+﻿@page
+@model ProiectMPD.Pages.User.Reviews.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1><i class="bi bi-chat-right-text-fill"></i> My Reviews</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Review[0].Release)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Review[0].Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Review) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Release.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

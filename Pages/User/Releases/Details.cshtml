@@ -11,23 +11,27 @@
     <h4>Release</h4>
     @if (Model.IsInLibrary)
     {
-        <td>
+        <div>
             <form method="post" asp-page-handler="RemoveFromLibrary">
                 <input type="hidden" name="releaseId" value="@Model.Release.ID" />
                 <button type="submit" class="btn btn-danger"><i class="bi bi-x-square-fill"></i> Remove from Library</button>
             </form>
-        </td>
+        </div>
+
     }
     else
     {
-    <td>
+        <div>
             <form method="post" asp-page-handler="AddToLibrary">
                 <input type="hidden" name="releaseId" value="@Model.Release.ID" />
                 <button type="submit" class="btn btn-success"><i class="bi bi-plus-square-fill"></i> Add to Library</button>
             </form>
-    </td>
+        </div>
         
     }
+    <div>
+        <a asp-page="./Reviews" asp-route-id="@Model.Release.ID" class="btn btn-info"><i class="bi bi-chat-right-text-fill"></i> Reviews</a>
+    </div>
 
     <hr />
     <dl class="row">
