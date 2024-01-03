@@ -1,0 +1,87 @@
+﻿@page
+@model ProiectMPD.Pages.User.Releases.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Release</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Release.Name)
+        </dt>
+        @if (Model.IsInLibrary)
+        {
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Release.Name) - In your library ✅ 
+        </dd>
+        }
+        else
+        {
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Release.Name) - Not in your Library 🚫 
+        </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Release.Artist)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Release.Artist != null)
+            {
+                @Html.DisplayFor(model => model.Release.Artist.Name)
+            }
+            else
+            {
+                <span>Artist information is not available.</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Release.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Release.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Release.Language)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Release.Language)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Release.Label)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Release.Label)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Release.Year)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Release.Year)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (Model.Release.Songs != null && Model.Release.Songs.Any())
+    {
+        <h4>Songs</h4>
+        <hr />
+        <ul>
+            @foreach (var song in Model.Release.Songs)
+            {
+                <li><b>@song.Title</b> (@song.Length)</li> <!-- Display properties of the song as needed -->
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No songs available for this release.</p>
+    }
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
