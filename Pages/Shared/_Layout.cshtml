@@ -45,13 +45,19 @@
                         @if (User.IsInRole("User"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Library/Index">Library</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Library/Index">
+                                    <i class="bi bi-music-note-list"></i>
+                                    Library</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Releases/Index">Releases</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Releases/Index">
+                                    <i class="bi bi-vinyl-fill"></i>
+                                    Releases</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Reviews/Index">My Reviews</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Reviews/Index">
+                                    <i class="bi bi-chat-right-text-fill"></i>
+                                    My Reviews</a>
                             </li>
                             <!-- Standard user navigation items -->
                         }

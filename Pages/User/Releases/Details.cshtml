@@ -5,98 +5,54 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Release</h4>
-    @if (Model.IsInLibrary)
-    {
-        <div>
-            <form method="post" asp-page-handler="RemoveFromLibrary">
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <h1>@Html.DisplayFor(model => model.Release.Name)</h1>
+            <form method="post" asp-page-handler="@(Model.IsInLibrary ? "RemoveFromLibrary": "AddToLibrary")" class="ms-2">
                 <input type="hidden" name="releaseId" value="@Model.Release.ID" />
-                <button type="submit" class="btn btn-danger"><i class="bi bi-x-square-fill"></i> Remove from Library</button>
+                <button type="submit" class="btn btn-link p-0 border-0 bg-transparent" style="outline:none;box-shadow:none;">
+                    <i class="bi @(Model.IsInLibrary ? "bi-heart-fill" : "bi-heart")" style="color: @(Model.IsInLibrary ? "#dc3545" : "#6c757d"); font-size: 1.5rem;"></i>
+                </button>
             </form>
         </div>
+        <a asp-page="./Index" class="btn btn-outline-secondary ml-auto">Back to List</a>
+    </div>
+</div>
 
-    }
-    else
-    {
-        <div>
-            <form method="post" asp-page-handler="AddToLibrary">
-                <input type="hidden" name="releaseId" value="@Model.Release.ID" />
-                <button type="submit" class="btn btn-success"><i class="bi bi-plus-square-fill"></i> Add to Library</button>
-            </form>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <img src="@(@Model.Release.Artwork!= null ? Model.Release.Artwork : "https://images.squarespace-cdn.com/content/v1/5d2e2c5ef24531000113c2a4/1564770283101-36J6KM8EIK71FOCGGDM2/album-placeholder.png")" class="img-fluid" alt="Album Cover">
         </div>
-        
-    }
-    <div>
-        <a asp-page="./Reviews" asp-route-id="@Model.Release.ID" class="btn btn-info"><i class="bi bi-chat-right-text-fill"></i> Reviews</a>
+        <div class="col-md-8">
+            <h3>@Html.DisplayFor(model => model.Release.Artist.Name)</h3>
+            <p>@Html.DisplayFor(model => model.Release.Type) • @Html.DisplayFor(model => model.Release.Year) <br /><small class="text-muted">@Html.DisplayFor(model => model.Release.Label)</small></p>
+            
+            <a asp-page="./Reviews" asp-route-id="@Model.Release.ID" class="text-decoration-none text-reset text-muted"><i class="bi bi-chat-right-text-fill"></i> Reviews</a>
+        </div>
     </div>
 
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Release.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayNameFor(model => model.Release.Name)
-        </dd>
-           <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Release.Artist)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Release.Artist != null)
-            {
-                @Html.DisplayFor(model => model.Release.Artist.Name)
-            }
-            else
-            {
-                <span>Artist information is not available.</span>
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Release.Type)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Release.Type)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Release.Language)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Release.Language)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Release.Label)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Release.Label)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Release.Year)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Release.Year)
-        </dd>
-    </dl>
+    <div>
+        @if (Model.Release.Songs != null && Model.Release.Songs.Any())
+        {
+            <h4>Songs</h4>
+            <div class="list-group">
+                @foreach (var song in Model.Release.Songs)
+                {
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1"><b>@song.Title</b></h5>
+                            <small>@song.Length</small>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No songs available for this release.</p>
+        }
+    </div>
 </div>
-<div>
-    @if (Model.Release.Songs != null && Model.Release.Songs.Any())
-    {
-        <h4>Songs</h4>
-        <hr />
-        <ul>
-            @foreach (var song in Model.Release.Songs)
-            {
-                <li><b>@song.Title</b> (@song.Length)</li> <!-- Display properties of the song as needed -->
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No songs available for this release.</p>
-    }
-</div>
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+
