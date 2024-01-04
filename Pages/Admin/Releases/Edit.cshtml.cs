@@ -71,7 +71,7 @@ namespace ProiectMPD.Pages.Releases
             releaseToUpdate,
             "Release",
             i => i.Name,
-            i => i.Type, i => i.Language,
+            i => i.Type, i => i.Language, i => i.Artwork,
             i => i.Label,i=> i.ArtistID,  i => i.Year))
             {
                 UpdateReleaseGenres(_context, selectedGenres, releaseToUpdate);

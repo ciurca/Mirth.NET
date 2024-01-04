@@ -22,7 +22,7 @@ body {
 }
 
 .btn-sign-in {
-    background-color: #C8102E; /* This is a common shade for 'mirth-red'. */
+    background-color: #C8102E;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -34,3 +34,14 @@ body {
 .btn-sign-in .bi-person-fill {
     margin-right: 5px;
 }
+/* Pentru imaginea release-ului */
+.col-md-3 img {
+    height: 200px;
+    width: 200px;
+}
+
+    .col-sm-6 img {
+        height: 200px;
+        width: 200px;
+    }
+

@@ -7,72 +7,43 @@
 
 <h1><i class="bi bi-music-note-list"></i> Library</h1>
 <form asp-page="./Index" method="get">
- <div class="form-actions no-color">
- <p>
- Find by Release Title / Artist Name:
- <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-page="./Index">Back to full List</a>
-        </p>
+    <div class="input-group w-25 mb-3">
+        <input type="text" name="SearchString" class="form-control" value="@Model.CurrentFilter" placeholder="Search releases & artists">
+        <div class="input-group-append">
+            <button class="btn btn-secondary" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
     </div>
 </form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Release[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Release[0].Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Release[0].Language)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Release[0].Label)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Release[0].Year)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Release[0].Artist)
-            </th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Release) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Language)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Label)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Artist.Name)
-            </td>
-            <td>
-                <a asp-page="/User/Releases/Details" asp-route-id="@item.ID">Details</a>
-            </td>
-                    <td>
-                        <form method="post" asp-page-handler="RemoveFromLibrary">
-                            <input type="hidden" name="releaseId" value="@item.ID" />
-                            <button type="submit" class="btn btn-danger"><i class="bi bi-x-square-fill"></i> Remove from Library</button>
-                        </form>
-                    </td>
 
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    @foreach (var item in Model.Release)
+    {
+        <div class="col-sm-6 col-md-3">
+            <a asp-page="/User/Releases/Details" asp-route-id="@item.ID" class="text-reset text-decoration-none">
+                <img src="@(item.Artwork != null ? @item.Artwork : "https://images.squarespace-cdn.com/content/v1/5d2e2c5ef24531000113c2a4/1564770283101-36J6KM8EIK71FOCGGDM2/album-placeholder.png")" class="rounded center-block img-responsive">
+            </a>
+
+            <div class="text-left">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h5 class="text-muted mb-0">
+                            <a asp-page="/User/Releases/Details" asp-route-id="@item.ID" class="text-reset text-decoration-none">@item.Name</a>
+                        </h5>
+                        <p class="mb-0">
+                            <a asp-page="/User/Artists/Details" asp-route-id="@item.ArtistID" class="text-reset text-decoration-none">@item.Artist.Name</a>
+                            • @item.Type <br /><small>@item.Year</small>
+                        </p>
+                    </div>
+                    <form method="post" asp-page-handler="RemoveFromLibrary" class="ms-2">
+                        <input type="hidden" name="releaseId" value="@item.ID" />
+                        <button type="submit" class="btn btn-link p-0 border-0 bg-transparent" style="outline:none;box-shadow:none;">
+                            <i class="bi-heart-fill" style="color: #dc3545; font-size: 1.5rem;"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
