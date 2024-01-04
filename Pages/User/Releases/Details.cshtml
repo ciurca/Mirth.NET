@@ -2,36 +2,41 @@
 @model ProiectMPD.Pages.User.Releases.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Release.Name + " - " + Model.Release.Type;
 }
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="d-flex align-items-center">
-            <h1>@Html.DisplayFor(model => model.Release.Name)</h1>
-            <form method="post" asp-page-handler="@(Model.IsInLibrary ? "RemoveFromLibrary": "AddToLibrary")" class="ms-2">
-                <input type="hidden" name="releaseId" value="@Model.Release.ID" />
-                <button type="submit" class="btn btn-link p-0 border-0 bg-transparent" style="outline:none;box-shadow:none;">
-                    <i class="bi @(Model.IsInLibrary ? "bi-heart-fill" : "bi-heart")" style="color: @(Model.IsInLibrary ? "#dc3545" : "#6c757d"); font-size: 1.5rem;"></i>
-                </button>
-            </form>
+
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <img src="@(Model.Release.Artwork != null ? Model.Release.Artwork : "https://images.squarespace-cdn.com/content/v1/5d2e2c5ef24531000113c2a4/1564770283101-36J6KM8EIK71FOCGGDM2/album-placeholder.png")" class="img-fluid rounded" alt="Album Cover">
+    </div>
+    <div class="col-md-8 d-flex flex-column">
+        <div>
+            <div class="d-flex align-items-center">
+                <h1>@Html.DisplayFor(model => model.Release.Name)</h1>
+                <form method="post" asp-page-handler="@(Model.IsInLibrary ? "RemoveFromLibrary" : "AddToLibrary")" class="ms-2">
+                    <input type="hidden" name="releaseId" value="@Model.Release.ID" />
+                    <button type="submit" class="btn btn-link p-0 border-0 bg-transparent">
+                        <i class="bi @(Model.IsInLibrary ? "bi-heart-fill" : "bi-heart")" style="color: @(Model.IsInLibrary ? "#dc3545" : "#6c757d");"></i>
+                    </button>
+                </form>
+            </div>
+            <h3 id="mirth-red">@Html.DisplayFor(model => model.Release.Artist.Name)</h3>
+            <p>
+                @Html.DisplayFor(model => model.Release.Type) • @Html.DisplayFor(model => model.Release.Year) <br>
+                <small>@Html.DisplayFor(model => model.Release.Label)</small>
+            </p>
         </div>
-        <a asp-page="./Index" class="btn btn-outline-secondary ml-auto">Back to List</a>
+        <div class="mt-auto">
+            <a asp-page="./Reviews" asp-route-id="@Model.Release.ID" class="btn btn-sign-in">
+                <i class="bi bi-chat-right-text-fill"></i> Reviews
+            </a>
+        </div>
     </div>
 </div>
 
 
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <img src="@(@Model.Release.Artwork!= null ? Model.Release.Artwork : "https://images.squarespace-cdn.com/content/v1/5d2e2c5ef24531000113c2a4/1564770283101-36J6KM8EIK71FOCGGDM2/album-placeholder.png")" class="img-fluid" alt="Album Cover">
-        </div>
-        <div class="col-md-8">
-            <h3>@Html.DisplayFor(model => model.Release.Artist.Name)</h3>
-            <p>@Html.DisplayFor(model => model.Release.Type) • @Html.DisplayFor(model => model.Release.Year) <br /><small class="text-muted">@Html.DisplayFor(model => model.Release.Label)</small></p>
-            
-            <a asp-page="./Reviews" asp-route-id="@Model.Release.ID" class="text-decoration-none text-reset text-muted"><i class="bi bi-chat-right-text-fill"></i> Reviews</a>
-        </div>
-    </div>
 
     <div>
         @if (Model.Release.Songs != null && Model.Release.Songs.Any())
@@ -42,7 +47,7 @@
                 {
                     <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                         <div>
-                            <h5 class="mb-1"><b>@song.Title</b></h5>
+                            <h5 class="mb-1">@song.Title</h5>
                             <small>@song.Length</small>
                         </div>
                     </a>
