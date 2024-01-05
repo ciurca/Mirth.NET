@@ -2,14 +2,11 @@
 @model ProiectMPD.Pages.User.Releases.ReviewsModel
 
 @{
-    ViewData["Title"] = "Reviews";
+    ViewData["Title"] = Model.Release.Name + " | " + "Reviews";
 }
 
 <h1>@Model.Release.Name - Reviews </h1>
 
-@{
-    ViewData["Title"] = "Index";
-}
 
 <table class="table">
     <thead>
