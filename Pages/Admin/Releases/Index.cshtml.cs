@@ -23,7 +23,9 @@ namespace ProiectMPD.Pages.Releases
 
         public async Task OnGetAsync()
         {
-            Release = await _context.Releases.ToListAsync();
+            Release = await _context.Releases
+                .Include(a=>a.Artist)
+                .ToListAsync();
         }
     }
 }
