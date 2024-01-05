@@ -14,23 +14,22 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Review.ID" />
-            <div class="form-group">
-                <label asp-for="Review.Rating" class="control-label"></label>
-                <input asp-for="Review.Rating" class="form-control" />
+            <div class="form-group star-rating">
+                <i class="bi bi-star" data-rating="1"></i>
+                <i class="bi bi-star" data-rating="2"></i>
+                <i class="bi bi-star" data-rating="3"></i>
+                <i class="bi bi-star" data-rating="4"></i>
+                <i class="bi bi-star" data-rating="5"></i>
+                <input asp-for="Review.Rating" type="hidden" class="rating-value">
                 <span asp-validation-for="Review.Rating" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Review.Text" class="control-label"></label>
-                <input asp-for="Review.Text" class="form-control" />
+                <textarea asp-for="Review.Text" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Review.Text" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Review.UserId" class="control-label"></label>
-                <select asp-for="Review.UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="Review.UserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Review.ReleaseID" class="control-label"></label>
+                <label asp-for="Review.ReleaseID" class="control-label">Release</label>
                 <select asp-for="Review.ReleaseID" class="form-control" asp-items="ViewBag.ReleaseID"></select>
                 <span asp-validation-for="Review.ReleaseID" class="text-danger"></span>
             </div>
@@ -47,4 +46,27 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script>
+        var $star_rating = $('.star-rating .bi');
+
+        var SetRatingStar = function () {
+            return $star_rating.each(function () {
+                if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                    return $(this).removeClass('bi-star').addClass('bi-star-fill');
+                } else {
+                    return $(this).removeClass('bi-star-fill').addClass('bi-star');
+                }
+            });
+        };
+
+        $star_rating.on('click', function () {
+            $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+            return SetRatingStar();
+        });
+
+        SetRatingStar();
+        $(document).ready(function () {
+
+        });
+    </script>
 }

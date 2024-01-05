@@ -16,7 +16,11 @@
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
                     <img src="~/static/logo-mirth.svg" width="120" height="40" class="d-inline-block align-top" alt="">
-                    </a>
+                        @if (User.IsInRole("Admin"))
+                    {
+                        <superscript><small><span class="badge bg-danger">Admin</span></small></superscript>
+                    }
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

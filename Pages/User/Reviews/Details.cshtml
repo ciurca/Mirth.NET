@@ -5,39 +5,42 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
 <div>
-    <h4>Review</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Review.Rating)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.Rating)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Review.Text)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.Text)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Review.User)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.User.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Review.Release)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Review.Release.Name)
-        </dd>
-    </dl>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <img src="@(Model.Review.Release.Artwork != null ? Model.Review.Release.Artwork : "https://images.squarespace-cdn.com/content/v1/5d2e2c5ef24531000113c2a4/1564770283101-36J6KM8EIK71FOCGGDM2/album-placeholder.png")" class="img-fluid rounded" alt="Album Cover">
+        </div>
+        <div class="col-md-8 d-flex flex-column">
+            <div>
+                <div>
+                    <div class="star-rating">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            if (Model.Review.Rating > i)
+                            {
+                                <i class="bi bi-star-fill" data-rating="@i"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-star" data-rating="@i"></i>
+                            }
+
+                        }
+
+                    </div>
+                    <h1>@Html.DisplayFor(model => model.Review.Release.Name)</h1>
+                <h3 id="mirth-red"><a asp-page="/User/Artists/Details" asp-route-id="@Model.Review.Release.ArtistID" class="text-reset text-decoration-none">@Html.DisplayFor(model => model.Review.Release.Artist.Name)</a></h3>
+                </div>
+                <p>
+                    @Html.DisplayFor(model => model.Review.Release.Type) • @Html.DisplayFor(model => model.Review.Release.Year) <br>
+                </p>
+            </div>
 </div>
 <div>
+<h3>Review by @Model.Review.User.Email</h3>
+<hr />
+    <p>@Html.DisplayFor(model => model.Review.Text)</p>
     @if (Model.Review.UserId == Model.userId)
     {
         <a asp-page="./Edit" asp-route-id="@Model.Review.ID">Edit</a> 

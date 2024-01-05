@@ -36,7 +36,7 @@ namespace ProiectMPD.Pages.Songs
                 return NotFound();
             }
             Song = song;
-           ViewData["ReleaseID"] = new SelectList(_context.Releases, "ID", "ID");
+           ViewData["ReleaseID"] = new SelectList(_context.Releases, "ID", "Name");
             return Page();
         }
 

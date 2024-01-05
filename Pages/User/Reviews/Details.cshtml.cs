@@ -33,6 +33,7 @@ namespace ProiectMPD.Pages.User.Reviews
             var review = await _context.Reviews
                 .Include(u => u.User)
                 .Include(u => u.Release)
+                .ThenInclude(r => r.Artist)
                 .FirstOrDefaultAsync(m => m.ID == id);
             userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
             if (review == null)

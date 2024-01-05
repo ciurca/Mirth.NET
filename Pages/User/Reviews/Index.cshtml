@@ -29,7 +29,19 @@
                 @Html.DisplayFor(modelItem => item.Release.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rating)
+                    <div class="star-rating">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            if(item.Rating>i)
+                            {
+                                <i class="bi bi-star-fill" data-rating="@i"></i>
+                            } else
+                            {
+                                <i class="bi bi-star" data-rating="@i"></i>
+                            }
+
+                        }
+                    </div>
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
@@ -40,3 +52,4 @@
 }
     </tbody>
 </table>
+

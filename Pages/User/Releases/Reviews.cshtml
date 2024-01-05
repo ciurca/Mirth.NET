@@ -31,7 +31,20 @@
                     @Html.DisplayFor(modelItem => item.User.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
+                    <div class="star-rating">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            if (item.Rating > i)
+                            {
+                                <i class="bi bi-star-fill" data-rating="@i"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-star" data-rating="@i"></i>
+                            }
+
+                        }
+                    </div>
                 </td>
                 <td>
                     <a asp-page="/User/Reviews/Details" asp-route-id="@item.ID">Read review</a>

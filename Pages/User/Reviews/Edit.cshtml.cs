@@ -37,9 +37,8 @@ namespace ProiectMPD.Pages.User.Reviews
                 return NotFound();
             }
             Review = review;
-           ViewData["ReleaseID"] = new SelectList(_context.Releases, "ID", "ID");
-           ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            ViewData["ReleaseID"] = new SelectList(_context.Releases, "ID", "Name");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (Review.UserId!= userId)
             {
                 TempData["ErrorMessage"] = "Ooops. Couldn't get that for you.";
@@ -52,18 +51,13 @@ namespace ProiectMPD.Pages.User.Reviews
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
-            if (Review.UserId!= userId)
-            {
-                TempData["ErrorMessage"] = "Ooops. Couldn't get that for you.";
-                return RedirectToPage("./Index");
-            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
 
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
+            Review.UserId= userId;
             _context.Attach(Review).State = EntityState.Modified;
 
             try
