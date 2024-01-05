@@ -1,0 +1,42 @@
+﻿@page
+@model ProiectMPD.Pages.User.Releases.ReviewsModel
+
+@{
+    ViewData["Title"] = "Reviews";
+}
+
+<h1>@Model.Release.Name - Reviews </h1>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Review[0].User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Review[0].Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Review)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <td>
+                    <a asp-page="/User/Reviews/Details" asp-route-id="@item.ID">Read review</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
