@@ -24,7 +24,7 @@ namespace ProiectMPD.Pages.User.Reviews
 
         public async Task OnGetAsync()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Review = await _context.Reviews
                 .Include(r => r.Release)
                 .Include(r => r.User)

@@ -48,7 +48,7 @@ namespace ProiectMPD.Pages.User.Releases
                 Release = release;
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             IsInLibrary = await _context.MusicLibraries
                                 .Where(l => l.UserId == userId)
                                 .SelectMany(l => l.Releases)
@@ -57,12 +57,11 @@ namespace ProiectMPD.Pages.User.Releases
         }
         public async Task<IActionResult> OnPostAddToLibraryAsync(int releaseId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             var success = await _musicLibraryService.AddReleaseToLibrary(userId, releaseId);
 
             if (success)
             {
-                // Redirect or return success message
                 TempData["SuccessMessage"] = "Release added to library.";
             } else
             {
@@ -72,12 +71,11 @@ namespace ProiectMPD.Pages.User.Releases
         }
         public async Task<IActionResult> OnPostRemoveFromLibraryAsync(int releaseId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             var success = await _musicLibraryService.RemoveReleaseFromLibrary(userId, releaseId);
 
             if (success)
             {
-                // Redirect or return success message
                 TempData["SuccessMessage"] = "Release removed from your library.";
             }
             else

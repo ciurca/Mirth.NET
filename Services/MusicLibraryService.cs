@@ -30,7 +30,6 @@ namespace ProiectMPD.Services
             var releaseToAdd = await _context.Releases.FindAsync(releaseId);
             if (releaseToAdd == null)
             {
-                // Handle the case where the release does not exist
                 return false;
             }
 
@@ -39,7 +38,6 @@ namespace ProiectMPD.Services
             return true;
         }
 
-        // Release is already in the library
         return false;
     }
         public async Task<bool> RemoveReleaseFromLibrary(string userId, int releaseId)

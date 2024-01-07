@@ -35,7 +35,7 @@ namespace ProiectMPD.Pages.User.Reviews
                 .Include(u => u.Release)
                 .ThenInclude(r => r.Artist)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             if (review == null)
             {
                 return NotFound();

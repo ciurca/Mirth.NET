@@ -41,7 +41,7 @@ namespace ProiectMPD.Pages.User.Reviews
             {
                 Review = review;
             }
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (Review.UserId!= userId)
             {
                 TempData["ErrorMessage"] = "Ooops. Couldn't get that for you.";
@@ -61,7 +61,7 @@ namespace ProiectMPD.Pages.User.Reviews
             if (review != null)
             {
                 Review = review;
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get current user's ID
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
                 if (Review.UserId!= userId)
                 {
                     TempData["ErrorMessage"] = "Ooops. Couldn't get that for you.";

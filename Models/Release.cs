@@ -16,12 +16,11 @@ namespace ProiectMPD.Models
         public string? Label { get; set; }
         [RegularExpression(@"^[0-9]{4}$", ErrorMessage = "Enter a valid Year.")]
         public int? Year { get; set; }
-        // Navigation properties for many-to-many relationship
         public ICollection<ReleaseGenre>? ReleaseGenres { get; set; }
-        public int? ArtistID { get; set; } // Foreign key
-        public Artist? Artist { get; set; } // Navigation property
-        public ICollection<Song>? Songs { get; set; } // If a Release can have multiple Songs
-        public ICollection<MusicLibrary>? MusicLibraries { get; set; } // For the many-to-many relationship with Library
+        public int? ArtistID { get; set; }
+        public Artist? Artist { get; set; }
+        public ICollection<Song>? Songs { get; set; }
+        public ICollection<MusicLibrary>? MusicLibraries { get; set; }
 
         public ICollection<Review>? Reviews { get; set; }
 

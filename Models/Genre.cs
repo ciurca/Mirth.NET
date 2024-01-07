@@ -4,7 +4,6 @@
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        // Navigation properties for many-to-many relationship
         public ICollection<ReleaseGenre>? ReleaseGenres { get; set; }
     }
 }
