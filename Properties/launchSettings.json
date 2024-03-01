@@ -13,7 +13,8 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "PROD_DB_CONNECTION_STRING": "Data Source=radudev.database.windows.net;Initial Catalog=mirth;User ID=raduc;Password=*VmXwtbBf8Ap@8;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7162;http://localhost:5255"
